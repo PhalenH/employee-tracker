@@ -5,16 +5,16 @@ const inquirer = require("inquirer");
 const consoleTable = require("console.table");
 
 const connection = mysql.createConnection(
-    {
-      host: 'localhost',
-      // MySQL username,
-      user: 'root',
-      // MySQL password
-      password: 'rootpassword',
-      database: 'business_db'
-    },
-    console.log(`Connected to the business_db database.`)
-  );
+  {
+    host: "localhost",
+    // MySQL username,
+    user: "root",
+    // MySQL password
+    password: "rootpassword",
+    database: "business_db",
+  },
+  console.log(`Connected to the business_db database.`)
+);
 
 // WHEN I start the application
 // THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
@@ -43,25 +43,28 @@ function initial() {
 
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
-function displayDepartments () {
-    connection.query('SELECT', function (err, results) {
-        console.table()
-    })
+function displayDepartments() {
+  connection.query("SELECT", function (err, results) {
+    console.table();
+  });
 }
+
 // WHEN I choose to view all roles
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-function displayRoles () {
-    connection.query('SELECT', function (err, results) {
-        console.table()
-    })
+function displayRoles() {
+  connection.query("SELECT", function (err, results) {
+    console.table();
+  });
 }
+
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
-function displayEmployees () {
-    connection.query('SELECT', function (err, results) {
-        console.table()
-    })
+function displayEmployees() {
+  connection.query("SELECT", function (err, results) {
+    console.table();
+  });
 }
+
 // WHEN I choose to add a department
 // THEN I am prompted to enter the name of the department and that department is added to the database
 function addDepartment() {
@@ -139,26 +142,24 @@ function addEmployee() {
 // WHEN I choose to update an employee role
 // THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 function updateRole() {
-    inquirer
-      .prompt([
-        {
-          type: "list",
-          message: "Which employee's role do you want to update?",
-          name: "selectedEmployee",
-          choices: [], // array of employee names from db
-        },
-        {
-            type: "list",
-            message: "Which role do you want to assign to the selected employee?",
-            name: "newRole",
-            choices: [], // array of roles  from db
-          },
-      ])
-      .then((updatedData) => {
-        // update database for role and employee
-      });
-  }
-
-
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Which employee's role do you want to update?",
+        name: "selectedEmployee",
+        choices: [], // array of employee names from db
+      },
+      {
+        type: "list",
+        message: "Which role do you want to assign to the selected employee?",
+        name: "newRole",
+        choices: [], // array of roles  from db
+      },
+    ])
+    .then((updatedData) => {
+      // update database for role and employee
+    });
+}
 
 // initial();
