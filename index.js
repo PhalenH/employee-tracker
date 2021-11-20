@@ -43,13 +43,25 @@ function initial() {
 
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
-
+function displayDepartments () {
+    connection.query('SELECT', function (err, results) {
+        console.table()
+    })
+}
 // WHEN I choose to view all roles
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-
+function displayRoles () {
+    connection.query('SELECT', function (err, results) {
+        console.table()
+    })
+}
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
-
+function displayEmployees () {
+    connection.query('SELECT', function (err, results) {
+        console.table()
+    })
+}
 // WHEN I choose to add a department
 // THEN I am prompted to enter the name of the department and that department is added to the database
 function addDepartment() {
