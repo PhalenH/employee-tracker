@@ -13,8 +13,8 @@ VALUES ("Sales Rep", 52000, 4),
        ("Marketing Lead", 90000, 4);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Mia", "Wallace", 1, 1),
-       ("Vincent", "Vega", 2, 2),
-       ("Jules", "Winnfield", 3, 3),
-       ("Marsellus", "Wallace", 4, 4),
-       ("Winston", "Wolf", 5, 5);
+VALUES ("Mia", "Wallace", 5, 5),
+       ("Vincent", "Vega", 1, 5),
+       ("Jules", "Winnfield", 3, 4),
+       ("Marsellus", "Wallace", 2),
+       ("Winston", "Wolf", 4, 4);
