@@ -44,25 +44,40 @@ function initial() {
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
 function displayDepartments() {
-  connection.query("SELECT", function (err, results) {
-    console.table();
+  connection.query("SELECT * FROM department", function (err, results) {
+    if (err) {
+      console.log(err);
+    }
+    console.table(results);
   });
 }
 
 // WHEN I choose to view all roles
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
 function displayRoles() {
-  connection.query("SELECT", function (err, results) {
-    console.table();
-  });
+  connection.query(
+    "SELECT role.id, role.title, department.name AS department, role.salary from role JOIN department ON role.department_id = department.id; ",
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      console.table(results);
+    }
+  );
 }
 
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 function displayEmployees() {
-  connection.query("SELECT", function (err, results) {
-    console.table();
-  });
+  connection.query(
+    "SELECT employee.id, employee.first_name, employee.last_name, role.title AS role, department.name AS department, role.salary AS salary ---Finish this",
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      console.table(results);
+    }
+  );
 }
 
 // WHEN I choose to add a department
