@@ -16,6 +16,7 @@ const connection = mysql.createConnection(
   console.log(`Connected to the business_db database.`)
 );
 
+
 // WHEN I start the application
 // THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 function initial() {
@@ -33,11 +34,28 @@ function initial() {
           "Add a role",
           "Add an employee",
           "Update an employee role",
+          "Quit"
         ],
       },
     ])
     .then((initialChoice) => {
-      // either if else statements or switch case here
+        if (initialChoice.initial === "View all departments"){
+            displayDepartments();
+        } else if (initialChoice.initial === "View all roles") {
+            displayRoles();
+        } else if (initialChoice.initial === "View all employees") {
+            displayEmployees();
+        } else if (initialChoice.initial === "Add a department") {
+            addDepartment();
+        } else if (initialChoice.initial === "Add a role") {
+            addRole();
+        } else if (initialChoice.initial === "Add an employee") {
+            addEmployee();
+        } else if (initialChoice.initial === "Update an employee role") {
+            updateRole();
+        } else if (initialChoice.initial === "Quit") {
+            console.log("Have a good day!")
+        }
     });
 }
 
@@ -49,6 +67,7 @@ function displayDepartments() {
       console.log(err);
     }
     console.table(results);
+    initial();
   });
 }
 
@@ -56,12 +75,13 @@ function displayDepartments() {
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
 function displayRoles() {
   connection.query(
-    "SELECT role.id, role.title, department.name AS department, role.salary from role JOIN department ON role.department_id = department.id; ",
+    "SELECT role.id, role.title, department.name AS department, role.salary from role JOIN department ON role.department_id = department.id",
     function (err, results) {
       if (err) {
         console.log(err);
       }
       console.table(results);
+      initial();
     }
   );
 }
@@ -76,6 +96,7 @@ function displayEmployees() {
         console.log(err);
       }
       console.table(results);
+      initial();
     }
   );
 }
@@ -177,4 +198,4 @@ function updateRole() {
     });
 }
 
-// initial();
+initial();
