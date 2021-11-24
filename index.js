@@ -16,6 +16,12 @@ const connection = mysql.createConnection(
   console.log(`Connected to the business_db database.`)
 );
 
+// connection.query("INSERT INTO department SET name = ?", "food", (err, results) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log(results)
+//   });
 
 // WHEN I start the application
 // THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
@@ -25,7 +31,7 @@ function initial() {
       {
         type: "list",
         message: "What would you like to do",
-        name: "initial",
+        name: "choice",
         choices: [
           "View all departments",
           "View all roles",
@@ -38,22 +44,22 @@ function initial() {
         ],
       },
     ])
-    .then((initialChoice) => {
-        if (initialChoice.initial === "View all departments"){
+    .then((initial) => {
+        if (initial.choice === "View all departments"){
             displayDepartments();
-        } else if (initialChoice.initial === "View all roles") {
+        } else if (initial.choice === "View all roles") {
             displayRoles();
-        } else if (initialChoice.initial === "View all employees") {
+        } else if (initial.choice === "View all employees") {
             displayEmployees();
-        } else if (initialChoice.initial === "Add a department") {
+        } else if (initial.choice === "Add a department") {
             addDepartment();
-        } else if (initialChoice.initial === "Add a role") {
+        } else if (initial.choice === "Add a role") {
             addRole();
-        } else if (initialChoice.initial === "Add an employee") {
+        } else if (initial.choice === "Add an employee") {
             addEmployee();
-        } else if (initialChoice.initial === "Update an employee role") {
+        } else if (initial.choice === "Update an employee role") {
             updateRole();
-        } else if (initialChoice.initial === "Quit") {
+        } else if (initial.choice === "Quit") {
             console.log("Have a good day!")
         }
     });
@@ -90,7 +96,7 @@ function displayRoles() {
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 function displayEmployees() {
   connection.query(
-    "SELECT employee.id, employee.first_name, employee.last_name, role.title AS role, department.name AS department, role.salary AS salary ---Finish this",
+    "SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.name AS department, role.salary AS salary, CONCAT(emp.first_name, ' ', emp.last_name) AS manager FROM employee INNER JOIN role ON role.id = employee.role_id INNER JOIN department ON department.id = role.department_id LEFT JOIN employee emp ON employee.manager_id = emp.id;",
     function (err, results) {
       if (err) {
         console.log(err);
@@ -108,11 +114,19 @@ function addDepartment() {
     .prompt([
       {
         type: "input",
-        message: "Enter the name of the department.",
-        name: "department",
+        message: "Enter the name of the department?",
+        name: "newDepartment",
       },
     ])
-    .then((departmentName) => {
+    .then((data) => {
+        const newDepartment = data.newDepartment 
+        connection.query("INSERT INTO department SET name = ?", newDepartment, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log(`Added ${newDepartment} to the database`)
+            initial();
+          });
       // add to department database
     });
 }
@@ -124,8 +138,8 @@ function addRole() {
     .prompt([
       {
         type: "input",
-        message: "What is the name of the role?",
-        name: "roleName",
+        message: "What is the title of the role?",
+        name: "roleTitle",
       },
       {
         type: "input",
@@ -140,6 +154,16 @@ function addRole() {
       },
     ])
     .then((roleData) => {
+        const roleTitle = roleData.roleTitle
+        const roleSalary = roleData.roleSalary
+        const roleDepartment = roleData.roleDepartment
+        connection.query("INSERT INTO role SET ?", {title: roleTitle, Salary: roleSalary}, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log(`Added ${roleTitle} to the database`)
+            initial();
+          });
       // add to role database
     });
 }
@@ -163,14 +187,27 @@ function addEmployee() {
         type: "input",
         message: "What is the employee’s role?",
         name: "employeeRole",
+        choices: [], // figure out way to use the role db so this list in always up to date if user adds a role
       },
       {
         type: "input",
         message: "Who is the employee’s manager?",
         name: "employeeManager",
+        choices: [], // figure out way to use the employee db so this list in always up to date if user adds a employee
       },
     ])
     .then((employeeData) => {
+        const firstName = employeeData.firstName
+        const lastName = employeeData.lastName
+        const employeeRole = employeeData.employeeRole
+        const employeeManager = employeeData.employeeManager
+        connection.query("INSERT INTO employee SET ?", {first_name: firstName, lastName: lastName}, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log(`Added ${firstName} ${lastName} to the database`)
+            initial();
+          });
       // add to employee database
     });
 }
