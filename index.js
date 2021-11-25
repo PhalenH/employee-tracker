@@ -173,7 +173,6 @@ function addRole() {
 function addEmployee() {
     connection.query("SELECT title, id from role", function (err, results) {
         showRoles = results.map(role => ({ name: role.title, value: {id: role.id, name: role.title} }))
-        console.log(showRoles)
     connection.query("SELECT first_name, last_name, id FROM employee;", function (err, results) {
         showManagers = results.map(manager => ({ name: manager.first_name + " " + manager.last_name, value: {id: manager.id, name: manager.first_name + " " + manager.last_name} }))
   inquirer
@@ -224,8 +223,8 @@ function addEmployee() {
 function updateRole() {
     connection.query("SELECT id, first_name, last_name FROM employee;", function (err, results) {
         showEmployees = results.map(employee => ({ name: employee.first_name + " " + employee.last_name, value: {id: employee.id, first: employee.first_name, last: employee.last_name} }))
-    connection.query("SELECT title, department_id from role", function (err, results) {
-        showRoles = results.map(role => ({ name: role.title, value: {id: role.department_id, name: role.title} }))
+    connection.query("SELECT title, id from role", function (err, results) {
+        showRoles = results.map(role => ({ name: role.title, value: {id: role.id, name: role.title} }))
   inquirer
     .prompt([
       {
