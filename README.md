@@ -39,9 +39,14 @@ The purpose of this application
 Once downloaded
 - A user will open a new terminal
 - Type in "npm i" to install dependencies
+- Type in "mysql -u root -p"
+    - Type in their mysql password
+- Write the following lines in the mysql terminal
+    - "source db/schema.sql" and hit enter
+    - "source db/seeds.sql" and hit enter
+    - "Quit" and hit enter
 - In the same terminal or a new terminal: Type in "node index.js"
-- This will start the prompts
-- Select from the options presented
+- Select from the options presented and fill out prompts as needed
 <!-- add additional instructions as needed -->
 
 ## Contributing: 
