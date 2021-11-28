@@ -8,8 +8,7 @@
 - [Questions](#Questions)
 
 ## Description: 
-The purpose of this application 
- <!-- TODO fill out description -->
+The purpose of this application was to create an interface that allows non-developers to easily view and interact with information stored in databases or "Content management systems" or CMS. This application allows a non-developer to view their companies departments, roles, and employees as well as create new departments, roles, and employess, and as for now can also update an employee's role using the command line. The acceptance criteria is as follows:
 
 - WHEN I start the application
     - THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
