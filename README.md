@@ -29,8 +29,7 @@ The purpose of this application
     - THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
 
 ## Video:
-[Employee Tracker Walkthrough Vdieo](####)
-<!-- add link to video when finished and uploaded -->
+[Employee Tracker Walkthrough Vdieo](https://youtu.be/NNiVm11lm1Y)
 
 ## Installation: 
 - Download or clone the repo from GitHub
@@ -45,9 +44,9 @@ Once downloaded
     - "source db/schema.sql" and hit enter
     - "source db/seeds.sql" and hit enter
     - "Quit" and hit enter
-- In the same terminal or a new terminal: Type in "node index.js"
+- In the same terminal or a new terminal 
+    - Type in "node index.js"
 - Select from the options presented and fill out prompts as needed
-<!-- add additional instructions as needed -->
 
 ## Contributing: 
   There a no plans for public contribution at this time.
