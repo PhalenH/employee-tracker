@@ -1,7 +1,9 @@
+// importing necessary packages
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
 const consoleTable = require("console.table");
 
+// connect to database
 const connection = mysql.createConnection(
   {
     host: "localhost",
@@ -14,6 +16,7 @@ const connection = mysql.createConnection(
   console.log(`Connected to the business_db database.`)
 );
 
+// establish variables to later be assigned
 let showDepartments;
 let showRoles;
 let showManagers;
@@ -40,6 +43,7 @@ function initial() {
         ],
       },
     ])
+    // if/else statements to call the appropriate function depending on user's selection of intial question
     .then((initial) => {
       if (initial.choice === "View all departments") {
         displayDepartments();
@@ -58,6 +62,7 @@ function initial() {
       } else if (initial.choice === "Quit") {
         console.log("Have a good day!");
         process.exit();
+      // exits out of node.js
       }
     });
 }
@@ -70,6 +75,7 @@ function displayDepartments() {
       console.log(err);
     }
     console.table(results);
+    // calls initial question again
     initial();
   });
 }
@@ -116,6 +122,7 @@ function addDepartment() {
       },
     ])
     .then((data) => {
+      // Use data from inquirer prompt to get the user input and set the department name
       const newDepartment = data.newDepartment;
       connection.query("INSERT INTO department SET name = ?", newDepartment, (err, results) => {
           if (err) {
@@ -131,6 +138,7 @@ function addDepartment() {
 // WHEN I choose to add a role
 // THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
 function addRole() {
+  // use prepared statement to get array of results, then map the results so the name of departments show up while still allwowing access to the deparment ID needed for assigning role ID
     connection.query("SELECT * FROM department", function (err, results) {
         showDepartments = results.map(department => ({ name: department.name, value: {id: department.id, name: department.name} }))
     inquirer
@@ -156,10 +164,12 @@ function addRole() {
       const roleTitle = roleData.roleTitle;
       const roleSalary = roleData.roleSalary;
       const roleDepartment = roleData.roleDepartment.id;
+      // since we're setting everything in role, can use 1 question mark and a single object containing necessary info
       connection.query("INSERT INTO role SET ?", { title: roleTitle, Salary: roleSalary, department_id: roleDepartment}, (err, results) => {
           if (err) {
             console.log(err);
           }
+          // use of template literal to state what role was added
           console.log(`Added ${roleTitle} to the database`);
           initial();
         }
@@ -175,7 +185,8 @@ function addEmployee() {
         showRoles = results.map(role => ({ name: role.title, value: {id: role.id, name: role.title} }))
     connection.query("SELECT first_name, last_name, id FROM employee;", function (err, results) {
         showManagers = results.map(manager => ({ name: manager.first_name + " " + manager.last_name, value: {id: manager.id, name: manager.first_name + " " + manager.last_name} }))
-  inquirer
+  // use of 2 queries to get 2 different array, map those arrays in similar fashion to display name but allows access to id's that are needed
+        inquirer
     .prompt([
       {
         type: "input",
@@ -201,6 +212,7 @@ function addEmployee() {
       },
     ])
     .then((employeeData) => {
+      // assigning new consts' data from inquirer and using them as part of the template literal 
       const firstName = employeeData.firstName;
       const lastName = employeeData.lastName;
       const employeeRole = employeeData.employeeRole.id;
@@ -243,6 +255,7 @@ function updateRole() {
     .then((updatedData) => {
         const employeeID = updatedData.selectedEmployee.id;
         const newRole = updatedData.newRole.id
+        // use of an array for the data being put into the prepared statement due to 2 seperate question marks
         connection.query("UPDATE employee SET role_id = ? WHERE id = ?", [newRole, employeeID], (err, results) => {
             if (err) {
               console.log(err);
@@ -255,5 +268,5 @@ function updateRole() {
    });
   });
 }
-
+// calls initial function right away
 initial();
